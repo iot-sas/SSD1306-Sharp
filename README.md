@@ -8,7 +8,7 @@
 - Optional Proportional spacing
 
 
-###Example
+### Example
 
 ```
     ﻿using (var i2cBus = new I2CBus("/dev/i2c-1"))
@@ -24,7 +24,7 @@
         display.DisplayUpdate();
     }
 ```
-###Proportional spacing.
+### Proportional spacing.
 ```
     var dinerRegular24 = new DinerRegular24();
     display.WriteLineBuffProportional(dinerRegular24,"192.168.0.5");                

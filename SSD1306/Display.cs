@@ -7,7 +7,7 @@ namespace SSD1306
     /// <summary>
     /// SSD1306 I2c OLED display driver
     /// </summary>
-    class Display
+    public class Display
     {
         public uint ScreenWidthPX       { get; private set; }
         public uint ScreenHeightPx      { get; private set; }
@@ -24,11 +24,12 @@ namespace SSD1306
         bool DisplayStateOn = false;
 
 
-        public Display(I2CDevice I2cDevice, uint WidthPx = 128, uint HeightPx = 32, bool FlipDisplay = false)
+        public Display(I2CDevice I2cDevice, uint WidthPx = 128, uint HeightPx = 32, bool flipDisplay = false)
         {
                 ScreenWidthPX = WidthPx;
                 ScreenHeightPx = HeightPx;
                 i2cDevice = I2cDevice;
+                FlipDisplay = flipDisplay;
         
                 ScreenPages = ScreenHeightPx / 8;
                 DisplayBuffer = new byte[ScreenPages,ScreenWidthPX];
@@ -45,7 +46,7 @@ namespace SSD1306
                 SendCommand(0x40);          //Set display RAM display start line //Reset
                 SendCommand(0xA0);          //Set Segment Re-map  RESET
                 SendCommand(0xA8, 0x1F);    //Set MUX ratio to N+1 MUX
-                SendCommand(FlipDisplay ? (byte)0xC8 : (byte)0xC0);          //Set COM Output Scan Direction 0=normal mode (RESET) C8
+                SendCommand(FlipDisplay ? (byte)0xC8 : (byte)0xC0);          //Set COM Output Scan Direction 0=normal mode
                 SendCommand(0xD3, 0x0);     //Set vertical shift by COM from 0d~63d 
                 SendCommand(0xDA, 0x00);    //Set COM Pins Hardware Configuration 
                 SendCommand(0xD5, 0x80);    //Set Display Clock Divide Ratio/Oscillator Frequency 
@@ -86,8 +87,9 @@ namespace SSD1306
 
             for (int page=0; page < ScreenPages;page++)
             {
-                var data = new byte[ScreenWidthPX];
+                var data = new byte[ScreenWidthPX];                
                 Buffer.BlockCopy(DisplayBuffer, (int)(page * ScreenWidthPX), data, 0, (int)ScreenWidthPX);
+                if (FlipDisplay) Array.Reverse(data);
                 SendDisplayData(data);
             }
         }
