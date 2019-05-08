@@ -12,7 +12,9 @@ namespace SSD1306
         public uint ScreenWidthPX       { get; private set; }
         public uint ScreenHeightPx      { get; private set; }
         public uint ScreenPages         { get; private set; }
+        public bool FlipDisplay         { get; private set; }
         private byte[,] DisplayBuffer;
+               
 
         static public readonly byte DefaultI2CAddress = 0x3C;
 
@@ -22,7 +24,7 @@ namespace SSD1306
         bool DisplayStateOn = false;
 
 
-        public Display(I2CDevice I2cDevice, uint WidthPx = 128, uint HeightPx = 32)
+        public Display(I2CDevice I2cDevice, uint WidthPx = 128, uint HeightPx = 32, bool FlipDisplay = false)
         {
                 ScreenWidthPX = WidthPx;
                 ScreenHeightPx = HeightPx;
@@ -43,13 +45,13 @@ namespace SSD1306
                 SendCommand(0x40);          //Set display RAM display start line //Reset
                 SendCommand(0xA0);          //Set Segment Re-map  RESET
                 SendCommand(0xA8, 0x1F);    //Set MUX ratio to N+1 MUX
-                SendCommand(0xC0);          //Set COM Output Scan Direction 0=normal mode (RESET) 
+                SendCommand(FlipDisplay ? (byte)0xC8 : (byte)0xC0);          //Set COM Output Scan Direction 0=normal mode (RESET) C8
                 SendCommand(0xD3, 0x0);     //Set vertical shift by COM from 0d~63d 
                 SendCommand(0xDA, 0x00);    //Set COM Pins Hardware Configuration 
                 SendCommand(0xD5, 0x80);    //Set Display Clock Divide Ratio/Oscillator Frequency 
                 SendCommand(0xD9, 0xF1);    //Set Pre-charge Period
                 SendCommand(0xDB, 0x30);    //Set VCOMH Deselect Level 
-                SendCommand(0x81, 0xFF);    // Set Contrast Control for BANK0 
+                SendCommand(0x81, Contrast);    // Set Contrast Control for BANK0 
                 SendCommand(0xA4);          //Entire Display ON 
                 SendCommand(0xA6);          //Set A6 Normal / A7 Inverse Displa
                 SendCommand(0x8D, 0x14);    //Disable chargepump(RESET) 
@@ -90,6 +92,14 @@ namespace SSD1306
             }
         }
 
+        /// <summary>
+        /// Writes the display buffer.
+        /// </summary>
+        /// <param name="font">Font.</param>
+        /// <param name="text">Text.</param>
+        /// <param name="row">Row.</param>
+        /// <param name="col">Col.</param>
+        /// <param name="CharSpacing">Optional forced character spacing.</param>
         public void WriteLineBuff(IFont font, String text, uint row, uint col, uint? CharSpacing = null)
         {
             if (!CharSpacing.HasValue) CharSpacing = font.CharSpacing;
@@ -100,6 +110,11 @@ namespace SSD1306
             }
         }
 
+        /// <summary>
+        /// Writes one or more lines to the display buffer.
+        /// </summary>
+        /// <param name="font">Font.</param>
+        /// <param name="Lines">Lines.</param>
         public void WriteLineBuff(IFont font,params String[] Lines)
         {
             Array.Clear(DisplayBuffer, 0, DisplayBuffer.Length);
@@ -112,7 +127,14 @@ namespace SSD1306
             }
         }
         
-        
+        /// <summary>
+        /// Writes a single Character to the display buffer.
+        /// </summary>
+        /// <returns>The char buff.</returns>
+        /// <param name="font">Font.</param>
+        /// <param name="Chr">Chr.</param>
+        /// <param name="Row">Row.</param>
+        /// <param name="Col">Col.</param>
         public uint WriteCharBuff(IFont font, Char Chr, UInt32 Row, UInt32 Col )
         {
             if (Chr == ' ') return font.CharSpacing;
@@ -134,9 +156,15 @@ namespace SSD1306
             return fontinfo.Columns;
         }
 
+        /// <summary>
+        /// Gets the Column Width (px) for the given text.
+        /// </summary>
+        /// <returns>The column width.</returns>
+        /// <param name="font">Font.</param>
+        /// <param name="Text">Text.</param>
+        /// <param name="MaxWidthToFill">Max width to fill.</param>
         public uint CalculateColumnWidth(IFont font, String Text, uint MaxWidthToFill)
         {
-       
             uint Col = 0;
             
             foreach (Char Chr in Text)
@@ -184,6 +212,24 @@ namespace SSD1306
             DisplayOff();
             Array.Clear(DisplayBuffer, 0, DisplayBuffer.Length);
         }
+
+        byte _contrast = 0xff;
+        public byte Contrast
+        {
+            set
+            {
+                if (_contrast != value)
+                {
+                    _contrast = value;
+                    SendCommand(0x81, _contrast);
+                }
+            }
+            get
+            {
+                return _contrast;
+            }
+        }
+        
 
     }
 }
