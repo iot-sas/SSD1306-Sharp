@@ -6,6 +6,7 @@
 - Includes Fonts, Tahmona 8 - 14 and DinerRegular24
 - Built in Linux I2C driver
 - Optional Proportional spacing
+- Availabe as Nuget package
 
 
 ### Example
@@ -29,4 +30,24 @@
     var dinerRegular24 = new DinerRegular24();
     display.WriteLineBuffProportional(dinerRegular24,"192.168.0.5");                
     display.DisplayUpdate();
+```
+
+
+
+```
+__________________________________
+/ Tap tap...where is the Mr Clippy \
+\ Support?                         /
+ ----------------------------------
+ \
+  \
+     __
+    /  \
+    |  |
+    @  @
+    |  |
+    || |/
+    || ||
+    |\_/|
+    \___/
 ```
