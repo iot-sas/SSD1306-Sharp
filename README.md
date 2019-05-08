@@ -1,17 +1,16 @@
-﻿#Simple C# display driver for the SSD1306.
-![Example](example.png)
+# Simple C# text display driver for the SSD1306.
 
+![Example](example.png)
 
 - Simple to use
 - Includes Fonts, Tahmona 8 - 14 and DinerRegular24
 - Built in Linux I2C driver
 - Optional Proportional spacing
 
-
 ### Example
 
 ```
-    ﻿using (var i2cBus = new I2CBus("/dev/i2c-1"))
+    using (var i2cBus = new I2CBus("/dev/i2c-1"))
     {
         var i2cDevice = new I2CDevice(i2cBus, Display.DefaultI2CAddress);
     
