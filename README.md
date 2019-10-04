@@ -18,7 +18,7 @@
         display = new SSD1306.Display(i2cDevice,128,32);
         display.Init();
     
-        var tahmona12 = new Tahmona12();
+        var dfont = new Tahmona12();
     
         display.WriteLineBuff(dfont,"Hello World 123456","Line 2 xxxx");
         display.DisplayUpdate();
@@ -31,21 +31,3 @@
     display.DisplayUpdate();
 ```
 
-
-```
-__________________________________
-/ Tap tap...where is the Mr Clippy \
-\ Support?                         /
- ----------------------------------
- \
-  \
-     __
-    /  \
-    |  |
-    @  @
-    |  |
-    || |/
-    || ||
-    |\_/|
-    \___/
-```
