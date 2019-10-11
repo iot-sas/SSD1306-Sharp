@@ -16,7 +16,6 @@ namespace SSD1306.Fonts
             IndexFrom = data[1];
             IndexTo = data[2];
         }
-
         
     }
 }

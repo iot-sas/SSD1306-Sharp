@@ -3,6 +3,16 @@ using System.IO;
 using System.Linq;
 namespace SSD1306
 {
+
+// Creates font classes.
+//
+// Uses The Dot Factory - Pass it's output into this.
+// http://www.eran.io/the-dot-factory-an-lcd-font-and-image-generator/
+// https://github.com/pavius/the-dot-factory
+//
+// See settings screenshot
+
+
     public class MakeFont
     {
         public MakeFont()
@@ -84,9 +94,6 @@ namespace SSD1306
 
                 }
             }
-
-
-                
         
         }
     }

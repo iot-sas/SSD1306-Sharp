@@ -7,6 +7,7 @@
 - Built in Linux I2C driver
 - Optional Proportional spacing
 - Availabe as Nuget package
+- Meadow Support
 
 ### Example
 
@@ -31,3 +32,40 @@
     display.DisplayUpdate();
 ```
 
+### Meadow Support.
+```
+
+    II2cBus i2cBus = Device.CreateI2cBus();
+    II2cPeripheral i2cPeripheral = new I2cPeripheral(i2cBus, Display.DefaultI2CAddress);
+    var i2cDevice = new SSD1306Display(i2cPeripheral);
+    var display = new SSD1306.Display(i2cDevice, 128, 32,true);
+    display.Init();
+    var dfont = new DinerRegular24();
+        
+    display.WriteLineBuffProportional(dfont, "IOT-SAS.tech");
+    display.DisplayUpdate();
+
+
+    class SSD1306Display : SSD1306.I2C.II2CDevice
+    {
+        public II2cPeripheral I2cPeripheral { get; private set; }
+
+      
+        public SSD1306Display(II2cPeripheral I2cPeripheral)
+        {
+            this.I2cPeripheral = I2cPeripheral;
+        }
+
+        public void WriteBytes(byte regAddress, byte[] data)
+        {
+            I2cPeripheral.WriteRegisters(regAddress, data);
+        }
+
+        public void WriteByte(byte regAddress, byte data)
+        {
+            I2cPeripheral.WriteRegister(regAddress, data);
+        }
+
+    }
+    
+```

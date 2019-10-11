@@ -1,6 +1,5 @@
 ﻿using System;
-using Mono.Linux.I2C;
-
+using SSD1306.I2C;
 
 namespace SSD1306
 {
@@ -18,13 +17,12 @@ namespace SSD1306
 
         static public readonly byte DefaultI2CAddress = 0x3C;
 
-        I2CBus i2cBus;
-        I2CDevice i2cDevice;
+        II2CDevice i2cDevice;
 
         bool DisplayStateOn = false;
 
 
-        public Display(I2CDevice I2cDevice, uint WidthPx = 128, uint HeightPx = 32, bool flipDisplay = false)
+        public Display(II2CDevice I2cDevice, uint WidthPx = 128, uint HeightPx = 32, bool flipDisplay = false)
         {
                 ScreenWidthPX = WidthPx;
                 ScreenHeightPx = HeightPx;
@@ -64,7 +62,7 @@ namespace SSD1306
         /// <param name="Data">Data.</param>
         private void SendDisplayData(byte[] Data)
         {
-            i2cDevice.WriteBytes(0x40,(byte)Data.Length,Data);
+            i2cDevice.WriteBytes(0x40,Data);
         }
 
         /// <summary>
@@ -193,8 +191,6 @@ namespace SSD1306
             WriteLineBuff(font, text, Row, Col, gap);
         
         }
-
-
 
 
         public void DisplayOn()
