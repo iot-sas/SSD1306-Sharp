@@ -12,9 +12,9 @@
 ### Example
 
 ```
-    using (var i2cBus = new I2CBus("/dev/i2c-1"))
+    using (var i2cBus = new I2CBusPI("/dev/i2c-1"))
     {
-        var i2cDevice = new I2CDevice(i2cBus, Display.DefaultI2CAddress);
+        var i2cDevice = new I2CDevicePI(i2cBus, Display.DefaultI2CAddress);
     
         display = new SSD1306.Display(i2cDevice,128,32);
         display.Init();

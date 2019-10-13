@@ -11,14 +11,14 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>SSD1306-Sharp</PackageId>
-    <PackageVersion>0.2</PackageVersion>
+    <PackageVersion>0.3</PackageVersion>
     <Authors>TFA Labs</Authors>
     <PackageLicenseUrl>https://github.com/iot-sas/SSD1306-Sharp/blob/master/LICENSE</PackageLicenseUrl>
     <Owners>TFA Labs</Owners>
     <PackageProjectUrl>https://github.com/iot-sas/SSD1306-Sharp</PackageProjectUrl>
     <Summary>Simple SSD1306 Display Driver</Summary>
     <Title>SSD1306-Sharp</Title>
-    <Description>Simple SSD1306 Display Driver for Linux &amp; Meadow</Description>
+    <Description>Simple SSD1306 Text Display Driver for Linux &amp; Meadow</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
