@@ -92,7 +92,7 @@ namespace SSD1306.I2CPI
             // xxx args: bitStart=4, length=3
             // 010 masked
             // -> 010 shifted
-            uint8_t count, b;
+            uint8_t b;
             b = ReadByte(regAddr, timeout);
             uint8_t mask = (byte)(((1 << length) - 1) << (bitStart - length + 1));
             b &= mask;
@@ -175,7 +175,7 @@ namespace SSD1306.I2CPI
             var byteLength = (byte) (length*2);
             var bytes = new byte[byteLength];
             
-            var returned = _bus.ReadBytes(_deviceAddress, regAddr, byteLength, bytes, 0, timeout = timeout);
+            var returned = _bus.ReadBytes(_deviceAddress, regAddr, byteLength, bytes, 0, timeout);
 
             if (returned != byteLength)
             {
