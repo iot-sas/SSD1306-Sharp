@@ -43,10 +43,10 @@ namespace SSD1306
                 SendCommand(0x20, 0x00);    //00 Horizontal 01 Virtical
                 SendCommand(0x40);          //Set display RAM display start line //Reset
                 SendCommand(0xA0);          //Set Segment Re-map  RESET
-                SendCommand(0xA8, 0x1F);    //Set MUX ratio to N+1 MUX
+                SendCommand(0xA8, (byte)(ScreenHeightPx - 1));    //Set MUX ratio to N+1 MUX
                 SendCommand(FlipDisplay ? (byte)0xC8 : (byte)0xC0);          //Set COM Output Scan Direction 0=normal mode
                 SendCommand(0xD3, 0x0);     //Set vertical shift by COM from 0d~63d 
-                SendCommand(0xDA, 0x00);    //Set COM Pins Hardware Configuration 
+                SendCommand(0xDA, (byte)(ScreenHeightPx == 64 ? 0x12 : 0x00));    //Set COM Pins Hardware Configuration 
                 SendCommand(0xD5, 0x80);    //Set Display Clock Divide Ratio/Oscillator Frequency 
                 SendCommand(0xD9, 0xF1);    //Set Pre-charge Period
                 SendCommand(0xDB, 0x30);    //Set VCOMH Deselect Level 
@@ -81,7 +81,7 @@ namespace SSD1306
         {
             if (!DisplayStateOn) DisplayOn();  //Display ON 
             SendCommand(0x21,0x0,0x7F); //Set Column Addressing
-            SendCommand(0x22,0x0,0x3);  //Set Page Address
+            SendCommand(0x22,0x0,(byte)(ScreenPages - 1));  //Set Page Address
 
             for (int page=0; page < ScreenPages;page++)
             {
@@ -227,7 +227,7 @@ namespace SSD1306
                 return _contrast;
             }
         }
-        
+
 
     }
 }
