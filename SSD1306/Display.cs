@@ -227,7 +227,14 @@ namespace SSD1306
                 return _contrast;
             }
         }
-        
 
+        public void DrawPixel(int x, int y)
+        {
+            if (x >= ScreenWidthPX || y >= ScreenHeightPx)
+                return;
+            var page = y / 8;
+            var byteToDraw = (byte)(1 << (y % 8));
+            DisplayBuffer[page, x] |= byteToDraw;
+        }
     }
 }
